@@ -15,7 +15,14 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: node scripts/check-budgets.mjs
-      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Install browser runtimes
+        timeout-minutes: 5
+        run: |
+          if [ -f /etc/apt/apt-mirrors.txt ]; then
+            sudo sed -i 's|azure.archive.ubuntu.com|archive.ubuntu.com|g' /etc/apt/apt-mirrors.txt
+          fi
+          printf 'Acquire::Retries "2";\nAcquire::http::Timeout "20";\nAcquire::https::Timeout "20";\n' | sudo tee /etc/apt/apt.conf.d/99-browser-ci > /dev/null
+          npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: always()
