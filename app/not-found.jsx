@@ -1,0 +1,1 @@
+export default function Missing(){return <main id="main" style={{padding:'15vh 6vw'}}><p>404 / ВНЕ ОРБИТЫ</p><h1 style={{fontSize:40,margin:'25px 0'}}>Эта точка пока не освещена.</h1><a className="textLink" href="/">Вернуться к ORBIT ↗</a></main>}
