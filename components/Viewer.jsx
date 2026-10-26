@@ -1,8 +1,8 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
-import {useReducedMotion} from 'framer-motion';
+
 import LampPoster from './LampPoster';
-export default function Viewer({config}){const host=useRef(null),api=useRef(null),current=useRef(config);current.current=config;const [enabled,setEnabled]=useState(false),[status,setStatus]=useState('poster'),[rotate,setRotate]=useState(false);const reduce=useReducedMotion();
+export default function Viewer({config}){const host=useRef(null),api=useRef(null),current=useRef(config);current.current=config;const [enabled,setEnabled]=useState(false),[status,setStatus]=useState('poster'),[rotate,setRotate]=useState(false);const [reduce,setReduce]=useState(false);useEffect(()=>{const media=window.matchMedia('(prefers-reduced-motion: reduce)');const sync=()=>setReduce(media.matches);sync();media.addEventListener('change',sync);return()=>media.removeEventListener('change',sync)},[]);
  useEffect(()=>{if(!enabled)return;let cancelled=false,instance;setStatus('loading');import('../lib/scene').then(({createScene})=>{if(cancelled)return;instance=createScene(host.current,current.current,()=>{setRotate(false);setStatus('error')});api.current=instance;setStatus('ready');}).catch(()=>{if(!cancelled)setStatus('error')});return()=>{cancelled=true;instance?.destroy();api.current=null;};},[enabled]);
  useEffect(()=>{api.current?.update(config)},[config]);useEffect(()=>{api.current?.setAuto(rotate&&!reduce);if(reduce&&rotate)setRotate(false)},[rotate,reduce,status]);
  function toggle(){setRotate(false);if(enabled){setEnabled(false);setStatus('poster')}else setEnabled(true)}
