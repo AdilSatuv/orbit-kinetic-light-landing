@@ -2,5 +2,6 @@
   "initialJsGzip": 240000,
   "largestRaster": 240000,
   "totalRaster": 950000,
-  "htmlGzip": 18000
+  "htmlGzip": 18000,
+  "totalJsGzip": 550000
 }
